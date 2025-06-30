@@ -74,6 +74,10 @@ class EditorPicker extends MusicBeatSubstate {
 		sprites[0].selected = true;
 
 		FlxG.mouse.getScreenPosition(subCam, oldMousePos);
+		#if mobile
+		addVPad(NONE, A_B);
+		addVPadCamera();
+		#end
 	}
 
 	public override function update(elapsed:Float) {
@@ -95,7 +99,7 @@ class EditorPicker extends MusicBeatSubstate {
 			changeSelection(Std.int(curMousePos.y / optionHeight)+1);
 		}
 
-		if (controls.ACCEPT || FlxG.mouse.justReleased) {
+		if (controls.ACCEPT #if desktop || FlxG.mouse.justReleased #end) {
 			if (options[curSelected].state != null) {
 				selected = true;
 				CoolUtil.playMenuSFX(CONFIRM);
@@ -116,10 +120,15 @@ class EditorPicker extends MusicBeatSubstate {
 			} else {
 				CoolUtil.openURL("https://www.youtube.com/watch?v=9Youam7GYdQ");
 			}
-
 		}
-		if (controls.BACK)
+
+		if (controls.BACK) {
+            #if mobile
+			FlxG.resetState();
+			#else
 			close();
+			#end
+		}
 	}
 
 	override function destroy() {

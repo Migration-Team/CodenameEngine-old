@@ -75,7 +75,7 @@ class EditorPicker extends MusicBeatSubstate {
 
 		FlxG.mouse.getScreenPosition(subCam, oldMousePos);
 		#if mobile
-		addVPad(NONE, A_B);
+		addVPad(UP_DOWN, A_B);
 		addVPadCamera();
 		#end
 	}
@@ -90,7 +90,7 @@ class EditorPicker extends MusicBeatSubstate {
 			subCam.scroll.x += camVelocity * elapsed;
 			return;
 		}
-		changeSelection(-FlxG.mouse.wheel + (controls.UP_P ? -1 : 0) + (controls.DOWN_P ? 1 : 0));
+		changeSelection(#if desktop -FlxG.mouse.wheel + #end (controls.UP_P ? -1 : 0) + (controls.DOWN_P ? 1 : 0));
 
 		FlxG.mouse.getScreenPosition(subCam, curMousePos);
 		if (curMousePos.x != oldMousePos.x || curMousePos.y != oldMousePos.y) {

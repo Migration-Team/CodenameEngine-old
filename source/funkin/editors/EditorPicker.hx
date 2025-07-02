@@ -73,7 +73,7 @@ class EditorPicker extends MusicBeatSubstate {
 		}
 		sprites[0].selected = true;
 
-		FlxG.mouse.getScreenPosition(subCam, oldMousePos);
+		#if desktop FlxG.mouse.getScreenPosition(subCam, oldMousePos); #end
 		#if mobile
 		addVPad(UP_DOWN, A_B);
 		addVPadCamera();
@@ -90,14 +90,16 @@ class EditorPicker extends MusicBeatSubstate {
 			subCam.scroll.x += camVelocity * elapsed;
 			return;
 		}
-		changeSelection(#if desktop -FlxG.mouse.wheel + #end (controls.UP_P ? -1 : 0) + (controls.DOWN_P ? 1 : 0));
+		changeSelection(-FlxG.mouse.wheel + (controls.UP_P ? -1 : 0) + (controls.DOWN_P ? 1 : 0));
 
+        #if desktop
 		FlxG.mouse.getScreenPosition(subCam, curMousePos);
 		if (curMousePos.x != oldMousePos.x || curMousePos.y != oldMousePos.y) {
 			oldMousePos.set(curMousePos.x, curMousePos.y);
 			curSelected = -1;
 			changeSelection(Std.int(curMousePos.y / optionHeight)+1);
 		}
+		#end
 
 		if (controls.ACCEPT #if desktop || FlxG.mouse.justReleased #end) {
 			if (options[curSelected].state != null) {
